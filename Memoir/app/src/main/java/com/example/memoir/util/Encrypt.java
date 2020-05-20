@@ -1,4 +1,4 @@
-package com.example.memoir.network;
+package com.example.memoir.util;
 
 import android.text.TextUtils;
 

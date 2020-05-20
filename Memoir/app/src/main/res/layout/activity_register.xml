@@ -187,49 +187,6 @@
                 android:padding="5dp"/>
         </TableRow>
 
-        <TableRow>
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:text="Password:"
-                android:gravity="center"
-                android:textSize="16sp" />
-            <EditText
-                android:id="@+id/password1"
-                android:ems="10"
-                android:inputType="textPassword"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:background="#fff"
-                android:padding="5dp"/>
-        </TableRow>
-
-        <TableRow>
-            <TextView
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:text="Confirm:"
-                android:gravity="center"
-                android:textSize="16sp" />
-            <EditText
-                android:id="@+id/password2"
-                android:ems="10"
-                android:inputType="textPassword"
-                android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_marginLeft="10dp"
-                android:layout_marginTop="20dp"
-                android:background="#fff"
-                android:hint="Re enter the password"
-                android:padding="5dp"/>
-        </TableRow>
-
         <TableRow android:layout_marginTop="30dp">
             <Button
                 android:id="@+id/submit"
@@ -238,15 +195,10 @@
                 android:layout_gravity="center"
                 android:textAllCaps="false"
                 android:layout_span="2"
-                android:text="Submit"
+                android:text="Next"
                 android:textColor="#000"
                 android:textSize="20sp"
                 android:textStyle="bold" />
-        </TableRow>
-
-        <TableRow
-            android:layout_marginTop="40dp">
-
         </TableRow>
 
     </TableLayout>

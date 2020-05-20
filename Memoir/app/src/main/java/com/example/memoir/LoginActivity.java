@@ -11,7 +11,14 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.memoir.entity.Credential;
+import com.example.memoir.entity.Person;
 import com.example.memoir.network.NetworkConnection;
+import com.example.memoir.util.JsonConvert;
+import com.google.gson.Gson;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -45,7 +52,7 @@ public class LoginActivity extends AppCompatActivity {
                 EditText password = findViewById(R.id.password);
 
                 LoginTask loginTask = new LoginTask();
-                loginTask.execute(username.getText().toString(),password.getText().toString());
+                loginTask.execute(username.getText().toString(), password.getText().toString());
             }
         });
 
@@ -55,12 +62,18 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(String... strings) {
-            return networkConnection.login(strings[0],strings[1]);
+            return networkConnection.login(strings[0], strings[1]);
         }
 
         @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(LoginActivity.this, s, Toast.LENGTH_SHORT).show();
+            if (s.equals("fail")) {
+                Toast.makeText(LoginActivity.this, "Please enter correct username and password", Toast.LENGTH_SHORT).show();
+            } else {
+                Credential credential = JsonConvert.stringToCredential(s);
+                Toast.makeText(LoginActivity.this,credential.getUsername().toString(),Toast.LENGTH_SHORT).show();
+                //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+            }
         }
     }
 }
