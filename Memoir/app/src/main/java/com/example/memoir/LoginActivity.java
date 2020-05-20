@@ -12,6 +12,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.memoir.entity.Credential;
+import com.example.memoir.entity.Memoir;
 import com.example.memoir.entity.Person;
 import com.example.memoir.network.NetworkConnection;
 import com.example.memoir.util.JsonConvert;
@@ -19,6 +20,8 @@ import com.google.gson.Gson;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.List;
 
 
 public class LoginActivity extends AppCompatActivity {
@@ -71,9 +74,10 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Please enter correct username and password", Toast.LENGTH_SHORT).show();
             } else {
                 Credential credential = JsonConvert.stringToCredential(s);
-                Toast.makeText(LoginActivity.this,credential.getUsername().toString(),Toast.LENGTH_SHORT).show();
-                //Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             }
         }
     }
+
+
 }

@@ -10,6 +10,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -17,6 +20,7 @@ import android.widget.Toast;
 import com.example.memoir.home.HomeFragment;
 import com.example.memoir.map.MapFragment;
 import com.example.memoir.memoir.MemoirFragment;
+import com.example.memoir.network.NetworkConnection;
 import com.example.memoir.report.ReportFragment;
 import com.example.memoir.search.SearchFragment;
 import com.example.memoir.view.ViewFragment;
@@ -30,11 +34,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ActionBarDrawerToggle toggle;
     private NavigationView navigationView;
 
+    private String topFiveMovies;
+
+    NetworkConnection networkConnection = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        //networkConnection = new NetworkConnection();
+
+        // fake data
+        SharedPreferences sharedPreferences = getSharedPreferences("Message", Context.MODE_PRIVATE);
+        SharedPreferences.Editor spEditor = sharedPreferences.edit();
+        spEditor.putString("id", "1");
+        spEditor.putString("firstname", "neda");
+        spEditor.apply();
 
         //adding the toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -51,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setHomeButtonEnabled(true);
 
         navigationView.setNavigationItemSelectedListener(this);
-        replaceFragment(new HomeFragment());
+        replaceFragment(new MapFragment());
     }
 
     @Override
@@ -60,15 +76,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         switch (id) {
             case R.id.homePage:
                 replaceFragment(new HomeFragment());
-                Toast.makeText(MainActivity.this,"home",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.searchPage:
                 replaceFragment(new SearchFragment());
-                Toast.makeText(MainActivity.this,"search",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.viewPage:
                 replaceFragment(new ViewFragment());
-                Toast.makeText(MainActivity.this,"view",Toast.LENGTH_SHORT).show();
                 break;
             case R.id.watchlistPage:
                 replaceFragment(new WatchlistFragment());
@@ -100,6 +113,20 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         if (toggle.onOptionsItemSelected(item))
             return true;
         return super.onOptionsItemSelected(item);
+    }
+
+    private class TopFive extends AsyncTask<Void, Void, String> {
+
+        @Override
+        protected String doInBackground(Void... voids) {
+            return networkConnection.getTopFive();
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            topFiveMovies = s;
+            Toast.makeText(MainActivity.this,"onpost"+topFiveMovies,Toast.LENGTH_SHORT).show();
+        }
     }
 
 

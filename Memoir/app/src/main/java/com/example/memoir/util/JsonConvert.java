@@ -1,27 +1,38 @@
 package com.example.memoir.util;
 
+import com.example.memoir.entity.Cinema;
 import com.example.memoir.entity.Credential;
+import com.example.memoir.entity.Memoir;
 import com.example.memoir.entity.Person;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class JsonConvert {
 
     public static Person stringToPerson(String s) {
         System.out.println(s);
-        Person p = new Person();
+        Person p = null;
         try {
             JSONObject j = new JSONObject(s);
-            p = jsonToPerson(j,p);
+            p = jsonToPerson(j);
         } catch (JSONException e) {
             e.printStackTrace();
         }
         return p;
     }
 
-    public static Person jsonToPerson(JSONObject j, Person p){
+    // one person object
+    public static Person jsonToPerson(JSONObject j) {
+        Person p = new Person();
         try {
             p.setId(j.getString("id"));
             p.setAddress(j.get("address").toString());
@@ -38,6 +49,7 @@ public class JsonConvert {
         return p;
     }
 
+    // one credential object
     public static Credential stringToCredential(String s) {
         Credential c = new Credential();
         try {
@@ -45,10 +57,57 @@ public class JsonConvert {
             c.setId(json.getString("id"));
             JSONObject pJson = json.getJSONObject("username");
             Person p = new Person();
-            c.setUsername(jsonToPerson(pJson,p));
+            c.setUsername(jsonToPerson(pJson));
         } catch (Exception e) {
             e.printStackTrace();
         }
         return c;
+    }
+
+    // one cinema object
+    public static Cinema jsonToCinema(JSONObject j) {
+        Cinema c = new Cinema();
+        try {
+            c.setId(j.getString("id"));
+            c.setLocation(j.getString("location"));
+            c.setName(j.getString("name"));
+            c.setPostcode(j.getString("postcode"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return c;
+    }
+
+    // multiple memoir objects
+    public static List<Memoir> stringToMemoirs(String s) {
+        List<Memoir> memoirs = new ArrayList<Memoir>();
+        Memoir m = null;
+/*
+        try {
+            JSONArray jsons = new JSONArray(s);
+            for (int i = 0; i < jsons.length(); i++) {
+                JSONObject j = jsons.getJSONObject(i);
+                m = new Memoir();
+                m.setName(j.getString("name"));
+                m.setReleaseDate(j.getString("releasedate"));
+                m.setScore(j.getString("score"));
+                memoirs.add(m);
+            } catch(JSONException e){
+                e.printStackTrace();
+            }
+
+ */
+        JsonArray jsons = new JsonParser().parse(s).getAsJsonArray();
+        for (JsonElement e : jsons) {
+            JsonObject j = e.getAsJsonObject();
+            m = new Memoir();
+            m.setName(j.get("name").getAsString());
+            m.setReleaseDate(j.get("releasedate").getAsString());
+            m.setScore(j.get("score").getAsString());
+            memoirs.add(m);
+        }
+
+
+        return memoirs;
     }
 }

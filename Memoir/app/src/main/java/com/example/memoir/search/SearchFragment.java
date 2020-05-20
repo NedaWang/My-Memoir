@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
 
@@ -25,8 +26,13 @@ public class SearchFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the View for this fragment
         View view = inflater.inflate(R.layout.fragment_search, container, false);
+        String s = getArguments().getString("saech");
+        if(s != null){
+            TextView tv = view.findViewById(R.id.tv_showmessage);
+            tv.setText(s);
+        }
 
-        TextView tv = view.findViewById(R.id.tv_showmessage);
+
         return view; }
 
 }

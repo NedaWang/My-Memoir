@@ -26,4 +26,5 @@ public class DateUtil {
     public static String toServerFormat(Date date){
         return formatter.format(date);
     }
+
 }

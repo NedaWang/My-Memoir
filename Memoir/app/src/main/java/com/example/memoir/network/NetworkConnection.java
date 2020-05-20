@@ -15,8 +15,8 @@ import okhttp3.Response;
 
 public class NetworkConnection {
 
-    private OkHttpClient client = null;
-    private String results;
+    private static OkHttpClient client = null;
+    private static String results;
 
     private static final String BASE_URL = "http://10.0.2.2:8080/MemoirDB/webresources/";
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
@@ -34,9 +34,9 @@ public class NetworkConnection {
         Request request = builder.build();
         try {
             Response response = client.newCall(request).execute();
-            if(response.code()==200){
+            if (response.code() == 200) {
                 results = response.body().string();
-            }else{
+            } else {
                 results = "fail";
             }
 
@@ -46,7 +46,7 @@ public class NetworkConnection {
         return results;
     }
 
-    // count person
+    // count person for calculate id
     public int countPerson() {
         final String methodPath = "memoir.person/count";
         Request.Builder builder = new Request.Builder();
@@ -80,7 +80,8 @@ public class NetworkConnection {
         return result;
     }
 
-    public String addCredential(Credential credential){
+    // add credential
+    public String addCredential(Credential credential) {
         Gson gson = new Gson();
         String credentialJson = gson.toJson(credential);
         String result = "";
@@ -94,6 +95,40 @@ public class NetworkConnection {
             e.printStackTrace();
         }
         return result;
+    }
+
+    public String topFiveMovies(String personId) {
+        final String methodPath = "memoir.memoir/findTopFiveByIdInCurrentYear/" + personId;
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL + methodPath);
+        Request request = builder.build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.code() == 200) {
+                results = response.body().string();
+            } else {
+                results = "fail";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return results;
+    }
+
+    public static String getTopFive() {
+        client = new OkHttpClient();
+        final String methodPath = "memoir.memoir/findTopFiveByIdInCurrentYear/2";
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL + methodPath);
+        Request request = builder.build();
+        try {
+            Response response = client.newCall(request).execute();
+            results = response.body().string();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return results;
     }
 
 }
