@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setHomeButtonEnabled(true);
 
         navigationView.setNavigationItemSelectedListener(this);
-        replaceFragment(new HomeFragment());
+        replaceFragment(new SearchFragment());
     }
 
     @Override
