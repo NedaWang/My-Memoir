@@ -3,57 +3,49 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:fillViewport="false">
-    <HorizontalScrollView
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content">
-    <TableLayout
-        android:id="@+id/movie_list"
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
-        android:layout_marginRight="50dp"
-        android:layout_marginLeft="50dp"
-        android:orientation="vertical"
-        android:stretchColumns="1">
+        android:layout_height="match_parent">
 
-        <TableRow android:padding="5dip">
-            <EditText
-                android:id="@+id/input"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_span="3"
-                android:gravity="center"
-                android:hint="Enter Movie Name"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </TableRow>
+        <EditText
+            android:id="@+id/input"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:gravity="center"
+            android:hint="Enter Movie Name"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="40dp"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-        <TableRow android:padding="5dip">
-            <Button
-                android:id="@+id/search_movie"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_span="3"
-                android:gravity="center"
-                android:hint="Search"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </TableRow>
+        <Button
+            android:id="@+id/search_movie"
+            android:layout_width="wrap_content"
+            android:layout_toEndOf="@id/input"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:layout_marginLeft="30dp"
+            android:gravity="center"
+            android:hint="Search"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
-        <TableRow android:padding="5dip">
-            <TextView
-                android:id="@+id/output"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="20dp"
-                android:layout_span="3"
-                android:gravity="center"
-                android:textSize="20sp"
-                android:textStyle="bold" />
-        </TableRow>
+        <TableLayout
+            android:id="@+id/movie_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="80dp"
+            android:orientation="vertical"
+            android:stretchColumns="1">
 
+            <TableRow></TableRow>
 
-    </TableLayout>
-    </HorizontalScrollView>
+        </TableLayout>
+
+    </RelativeLayout>
 </ScrollView>

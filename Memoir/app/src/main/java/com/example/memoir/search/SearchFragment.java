@@ -43,13 +43,13 @@ public class SearchFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
         input = view.findViewById(R.id.input);
-        output = view.findViewById(R.id.output);
         search = view.findViewById(R.id.search_movie);
         tableLayout = view.findViewById(R.id.movie_list);
 
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                cleanTable(tableLayout);
                 SearchMovieTask searchMovieTask = new SearchMovieTask();
                 searchMovieTask.execute(input.getText().toString());
             }
@@ -86,19 +86,20 @@ public class SearchFragment extends Fragment {
                         row = new TableRow(getActivity());
                         TableLayout.LayoutParams tableRowParams =
                                 new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
-                        tableRowParams.setMargins(0, 20, 10, 0);
+                        tableRowParams.setMargins(0, 20, 4, 0);
                         row.setLayoutParams(tableRowParams);
                         name = new TextView(getActivity());
                         name.setSingleLine(false);
-                        name.setMaxWidth(100);
+                        name.setMaxWidth(90);
                         //TableLayout.LayoutParams textViewParams = new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT);
                         //textViewParams.setMa
                         //name.setLayoutParams(textViewParams);
                         date = new TextView(getActivity());
+                        date.setSingleLine(false);
                         image = new ImageView(getActivity());
+
                         name.setText(movieName);
                         date.setText(movieDate);
-
                         String url = "https://image.tmdb.org/t/p/w500" + movieImage;
                         Picasso.get().load(url).into(image);
 
@@ -115,6 +116,17 @@ public class SearchFragment extends Fragment {
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+
+
+        }
+    }
+    private void cleanTable(TableLayout table) {
+
+        int childCount = table.getChildCount();
+
+        // Remove all rows except the first one
+        if (childCount > 1) {
+            table.removeViews(1, childCount - 1);
         }
     }
 }
