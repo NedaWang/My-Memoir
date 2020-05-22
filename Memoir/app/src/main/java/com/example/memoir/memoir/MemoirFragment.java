@@ -19,11 +19,8 @@ public class MemoirFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_memoir,container,false);
 
-        String s = getArguments().getString("saech");
-        if (s != null) {
-            TextView tv = view.findViewById(R.id.tv_showmessage);
-            tv.setText(s);
-        }
+        TextView tv = view.findViewById(R.id.tv_showmessage);
+        tv.setText(getActivity().getIntent().getStringExtra("info1"));
 
         return view;
     }

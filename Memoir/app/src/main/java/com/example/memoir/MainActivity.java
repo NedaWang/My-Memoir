@@ -67,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setHomeButtonEnabled(true);
 
         navigationView.setNavigationItemSelectedListener(this);
-        replaceFragment(new ReportFragment());
+        replaceFragment(new ViewFragment());
     }
 
     @Override
@@ -115,19 +115,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         return super.onOptionsItemSelected(item);
     }
 
-    private class TopFive extends AsyncTask<Void, Void, String> {
-
-        @Override
-        protected String doInBackground(Void... voids) {
-            return networkConnection.getTopFive();
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-            topFiveMovies = s;
-            Toast.makeText(MainActivity.this,"onpost"+topFiveMovies,Toast.LENGTH_SHORT).show();
-        }
-    }
 
 
 }

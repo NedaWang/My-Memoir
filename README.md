@@ -6,3 +6,6 @@
 5.21 2am search movie api
 
 5.21 11pm finish report fragment
+
+5.22 map fragment
+

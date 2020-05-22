@@ -19,4 +19,6 @@ public class WatchlistFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_watch_list,container,false);
         return view;
     }
+
+    //https://firebase.google.com/docs/android/setup#assistant
 }

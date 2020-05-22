@@ -17,9 +17,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.memoir.R;
 import com.example.memoir.network.SearchMovieAPI;
+import com.example.memoir.view.ViewFragment;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -103,6 +106,18 @@ public class SearchFragment extends Fragment {
                         String url = "https://image.tmdb.org/t/p/w500" + movieImage;
                         Picasso.get().load(url).into(image);
 
+                        image.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ViewFragment viewFragment = new ViewFragment();
+                                FragmentManager fragmentManager = getFragmentManager();
+                                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                                fragmentTransaction.replace(R.id.content_frame, viewFragment);
+                                //content_frame
+                                fragmentTransaction.addToBackStack(null);
+                                fragmentTransaction.commit();
+                            }
+                        });
                         row.addView(image);
                         row.addView(name);
                         row.addView(date);

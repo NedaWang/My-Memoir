@@ -11,14 +11,14 @@
         android:title="View Movie" />
     <item
         android:id="@+id/watchlistPage"
-        android:title="watch list" />
+        android:title="Watch List" />
     <item
         android:id="@+id/memoirPage"
-        android:title="watch list" />
+        android:title="Memoir" />
     <item
         android:id="@+id/reportPage"
-        android:title="report" />
+        android:title="Report" />
     <item
         android:id="@+id/mapPage"
-        android:title="map" />
+        android:title="Map" />
 </menu>

@@ -108,7 +108,6 @@ public class HomeFragment extends Fragment {
                 row.addView(date);
                 row.addView(score);
                 tableLayout.addView(row);
-
             }
         }
     }
