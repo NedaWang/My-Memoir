@@ -7,7 +7,7 @@
         android:id="@+id/login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/password"
+        android:layout_below="@id/password"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="33dp"
         android:text="Log In"

@@ -198,6 +198,8 @@ public class ReportFragment extends Fragment {
                 e.printStackTrace();
             }
 /*
+            ArrayList<BarEntry> entries = new ArrayList<>();
+            ArrayList<String> labels = new ArrayList<String>();
             entries.add(new BarEntry(8f, 5));
             entries.add(new BarEntry(2f, 6));
             entries.add(new BarEntry(5f, 7));
@@ -210,7 +212,8 @@ public class ReportFragment extends Fragment {
             labels.add("2013");
             labels.add("2012");
             labels.add("2011");
-
+            BarData data = new BarData(labels, bardataset);
+            barChart.setData(data);
 
  */
             BarData data = new BarData(labels, bardataset);

@@ -6,6 +6,7 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,10 +83,6 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
     @Override
     public void onMapReady(GoogleMap googleMap) {
         //https://developers.google.com/maps/documentation/geocoding/start
-
-        //-37.884153, 145.084093 Hoyts Chadstone  1341 Dandenong Road
-        // Waverley Cinema Blackburn Rd, Mount Waverley
-        // Village Cinemas Century City 285/287 Springvale Rd
         map = googleMap;
         LatLng monash = new LatLng(-37.8771, 145.04493);
         //map.addMarker(new MarkerOptions().position(home).title("my home"));
@@ -123,7 +120,10 @@ public class MapFragment extends Fragment implements OnMapReadyCallback{
 
         @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(getActivity(),""+getLocationFromAddress(getActivity(),"1341 Dandenong Road").latitude,Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(),""+getLocationFromAddress(getActivity(),"Caulfield").latitude + getLocationFromAddress(getActivity(),
+                    "Caulfiled").longitude,Toast.LENGTH_SHORT).show();
+            //Log.i("latitude",""+getLocationFromAddress(getActivity(),"Caulfield").latitude);
+            //Log.i("longitude",""+getLocationFromAddress(getActivity(),"Caulfield").longitude);
         }
     }
 }
