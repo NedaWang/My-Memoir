@@ -1,5 +1,7 @@
 package com.example.memoir.search;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -76,9 +78,13 @@ public class SearchFragment extends Fragment {
                 JSONArray array = object.getJSONArray("results");
                 //output.setText(array.length()+"");
                 for (int i = 0; i < array.length(); i++) {
-                    String movieName = array.getJSONObject(i).getString("title");
-                    String movieDate = array.getJSONObject(i).getString("release_date");
+                    final String movieName = array.getJSONObject(i).getString("title");
+                    final String movieDate = array.getJSONObject(i).getString("release_date");
                     String movieImage = array.getJSONObject(i).getString("poster_path");
+                    final String movieID = array.getJSONObject(i).getString("id");
+                    // b43e380b2a3295ab244b24f4887d9d0d
+                    // https://api.themoviedb.org/3/search/movie?api_key=b43e380b2a3295ab244b24f4887d9d0d&query=Jack+Reacher
+                    // https://api.themoviedb.org/3/movie/150540?api_key=b43e380b2a3295ab244b24f4887d9d0d&append_to_response=credits
                     if (movieDate.equals("null") || movieImage.equals("null") || movieName.equals("null")) {
 
                     } else {
@@ -99,12 +105,19 @@ public class SearchFragment extends Fragment {
 
                         name.setText(movieName);
                         date.setText(movieDate);
-                        String url = "https://image.tmdb.org/t/p/w500" + movieImage;
+                        final String url = "https://image.tmdb.org/t/p/w500" + movieImage;
                         Picasso.get().load(url).into(image);
 
                         image.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                SharedPreferences sharedPref = getActivity().getSharedPreferences("Movies", Context.MODE_PRIVATE);
+                                SharedPreferences.Editor spEditor = sharedPref.edit();
+                                spEditor.putString("movie_id", movieID);
+                                spEditor.putString("movie_name", movieName);
+                                spEditor.putString("release_date", movieDate);
+                                spEditor.putString("movie_image", url);
+                                spEditor.apply();
                                 ViewFragment viewFragment = new ViewFragment();
                                 FragmentManager fragmentManager = getFragmentManager();
                                 FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();

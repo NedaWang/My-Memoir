@@ -16,7 +16,7 @@ public class SearchMovieAPI {
         String textResult = "";
 
         String aim = "https://api.themoviedb.org/3/search/movie?api_key=" + API_KEY + "&query=" + param;
-        System.out.println("srattttttttt"+aim);
+
         try {
             url = new URL(aim);
             connection = (HttpURLConnection) url.openConnection();
@@ -35,6 +35,31 @@ public class SearchMovieAPI {
             connection.disconnect();
         }
         System.out.println("sratttttttttweeeeee"+textResult);
+        return textResult;
+    }
+
+    public static String searchByUrl(String urlAddress){
+        URL url = null;
+        HttpURLConnection connection = null;
+        String textResult = "";
+        try {
+            url = new URL(urlAddress);
+            connection = (HttpURLConnection) url.openConnection();
+            connection.setReadTimeout(10000);
+            connection.setConnectTimeout(15000);
+            connection.setRequestMethod("GET");
+            connection.setRequestProperty("Content-Type", "application/json");
+            connection.setRequestProperty("Accept", "application/json");
+            Scanner scanner = new Scanner(connection.getInputStream());
+            while (scanner.hasNextLine()) {
+                textResult += scanner.nextLine();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            connection.disconnect();
+        }
+        System.out.println("sratttttttttweeeeee"+textResult.substring(0,100));
         return textResult;
     }
 }

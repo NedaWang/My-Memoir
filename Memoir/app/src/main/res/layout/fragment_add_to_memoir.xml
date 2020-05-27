@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/movie_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            android:text="movie name" />
+
+        <ImageView
+            android:id="@+id/movie_poster"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/movie_name"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:src="@drawable/poster" />
+
+        <TableLayout
+            android:layout_below="@id/movie_poster"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="300dp"
+            android:layout_height="wrap_content">
+            <TableRow>
+                <TextView
+                    android:id="@+id/release_date_text"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Release Date:" />
+                <TextView
+                    android:id="@+id/release_date"
+                    android:layout_height="wrap_content" />
+            </TableRow>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:layout_marginBottom="20dp"
+                android:layout_span="2"
+                android:gravity="center"
+                android:text="Please provide more info:" />
+            <TableRow>
+                <TextView
+                    android:id="@+id/watch_date_text"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Release Date:" />
+                <EditText
+                    android:id="@+id/watch_date"
+                    android:layout_height="wrap_content" />
+            </TableRow>
+
+
+        </TableLayout>
+
+
+
+    </RelativeLayout>
+</ScrollView>

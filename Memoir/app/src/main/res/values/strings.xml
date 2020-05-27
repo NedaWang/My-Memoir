@@ -2,6 +2,7 @@
     <string name="app_name">Memoir</string>
     <string name="Open">open</string>
     <string name="Close">close</string>
+    <string name="tmdb_api_key">b43e380b2a3295ab244b24f4887d9d0d</string>
     <string-array name="states">
         <item>VIC</item>
         <item>NSW</item>

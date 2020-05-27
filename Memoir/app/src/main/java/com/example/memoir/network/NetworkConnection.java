@@ -116,9 +116,9 @@ public class NetworkConnection {
         return results;
     }
 
-    public static String getTopFive() {
+    public static String getCinemas(){
         client = new OkHttpClient();
-        final String methodPath = "memoir.memoir/findTopFiveByIdInCurrentYear/2";
+        final String methodPath = "memoir.cinema";
         Request.Builder builder = new Request.Builder();
         builder.url(BASE_URL + methodPath);
         Request request = builder.build();

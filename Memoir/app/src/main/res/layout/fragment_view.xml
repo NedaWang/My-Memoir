@@ -1,23 +1,168 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:fillViewport="false">
 
-    <TextView
-        android:id="@+id/show_info"
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="here is info"
-        android:layout_marginTop="30dp"/>
+        android:layout_height="match_parent">
 
-    <fragment
-        android:id="@+id/youtube_fragment"
-        android:name="com.google.android.youtube.player.YouTubePlayerSupportFragment"
-        android:layout_below="@id/show_info"
-        android:layout_marginTop="30dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        <TextView
+            android:id="@+id/movie_name_text"
+            android:layout_width="100dp"
+            android:gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:text="Movie Name: "/>
+        <TextView
+            android:id="@+id/movie_name"
+            android:layout_marginLeft="12dp"
+            android:layout_toEndOf="@id/movie_name_text"
+            android:layout_centerHorizontal="true"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="movie name"
+            android:layout_marginTop="30dp"/>
+
+        <TextView
+            android:id="@+id/release_date_text"
+            android:layout_below="@id/movie_name_text"
+            android:layout_width="100dp"
+            android:gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Release Date: "/>
+        <TextView
+            android:id="@+id/release_date"
+            android:layout_toEndOf="@id/release_date_text"
+            android:layout_below="@id/movie_name"
+            android:layout_marginLeft="12dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="release date"
+            android:layout_marginTop="10dp"/>
 
 
-</RelativeLayout>
+        <TextView
+            android:id="@+id/genre_text"
+            android:layout_below="@id/release_date"
+            android:layout_width="100dp"
+            android:gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Genre: "/>
+        <TextView
+            android:id="@+id/genre"
+            android:layout_toEndOf="@id/genre_text"
+            android:layout_below="@id/release_date"
+            android:layout_marginLeft="12dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="genre"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/storyline_text"
+            android:layout_below="@id/genre"
+            android:layout_width="100dp"
+            android:gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Storyline: "/>
+        <TextView
+            android:id="@+id/storyline"
+            android:layout_toEndOf="@id/storyline_text"
+            android:layout_marginLeft="12dp"
+            android:layout_below="@id/genre"
+            android:layout_centerHorizontal="true"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:text="storyline"
+            android:layout_marginTop="10dp"/>
+
+
+        <TextView
+            android:id="@+id/cast_text"
+            android:layout_below="@id/storyline"
+            android:layout_width="100dp"
+            android:gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Cast: "/>
+        <TextView
+            android:id="@+id/cast"
+            android:layout_toEndOf="@id/cast_text"
+            android:layout_marginLeft="12dp"
+            android:layout_below="@id/storyline"
+            android:layout_centerHorizontal="true"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:text="cast"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/director_text"
+            android:layout_below="@id/cast"
+            android:layout_width="100dp"
+            android:gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Director: "/>
+        <TextView
+            android:id="@+id/director"
+            android:layout_toEndOf="@id/director_text"
+            android:layout_marginLeft="12dp"
+            android:layout_below="@id/cast"
+            android:layout_centerHorizontal="true"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:text="directors"
+            android:layout_marginTop="10dp"/>
+
+        <TextView
+            android:id="@+id/score_text"
+            android:layout_below="@id/director"
+            android:layout_width="100dp"
+            android:gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="Score: "/>
+        <RatingBar
+            android:id="@+id/score"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/score_text"
+            android:layout_marginLeft="12dp"
+            android:layout_below="@id/director"
+            android:scaleX="0.7"
+            android:scaleY="0.7"
+            android:transformPivotX="5dp"
+            android:transformPivotY="20dp"
+            android:numStars="5"
+            android:stepSize="0.1"/>
+        <!-- android:transformPivotX="0dp" -->
+        <!-- scale without creating a padding on the left also add -->
+        <!-- style="?android:attr/ratingBarStyleIndicator" -->
+
+
+        <Button
+            android:id="@+id/add_to_memoir"
+            android:layout_below="@id/score"
+            android:text="Add to Memore"
+            android:layout_marginTop="20dp"
+            android:layout_centerHorizontal="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </RelativeLayout>
+</ScrollView>

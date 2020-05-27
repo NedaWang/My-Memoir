@@ -2,111 +2,141 @@ package com.example.memoir.view;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
-import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
-import android.widget.VideoView;
-import android.widget.MediaController;
+import android.widget.Button;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
-import com.example.memoir.MainActivity;
 import com.example.memoir.R;
-import com.example.memoir.util.FireBaseDB;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.youtube.player.YouTubePlayerView;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreSettings;
+import com.example.memoir.memoir.AddToMemoirFragment;
+import com.example.memoir.network.SearchMovieAPI;
+import com.google.gson.JsonElement;
 
-import java.text.DateFormat;
-import java.text.Format;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
-
-import static android.content.ContentValues.TAG;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 public class ViewFragment extends Fragment {
     //FirebaseFirestore db;
+    TextView movieName;
+    TextView releaseDate;
+    TextView genre;
+    TextView storyline;
+    TextView cast;
+    //TextView score;
+    RatingBar score;
+    TextView director;
 
-    YouTubePlayerView player;
+    Button addToMemoir;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_view, container, false);
 
-        player = view.findViewById(R.id.youtube_fragment);
+        // get info from previous fragment
+        SharedPreferences sharedPref= getActivity().getSharedPreferences("Movies", Context.MODE_PRIVATE);
+        String message= sharedPref.getString("movie_id",null);
 
+        movieName = view.findViewById(R.id.movie_name);
+        releaseDate = view.findViewById(R.id.release_date);
+        genre = view.findViewById(R.id.genre);
+        storyline = view.findViewById(R.id.storyline);
+        cast = view.findViewById(R.id.cast);
+        score = view.findViewById(R.id.score);
+        director = view.findViewById(R.id.director);
+
+        if (message != null){
+            SearchMovieDetailTask searchTask = new SearchMovieDetailTask();
+            searchTask.execute(message);
+        }
+
+        addToMemoir = view.findViewById(R.id.add_to_memoir);
+        addToMemoir.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AddToMemoirFragment addToMemoirFragment = new AddToMemoirFragment();
+                FragmentManager fragmentManager = getFragmentManager();
+                FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+                fragmentTransaction.replace(R.id.content_frame, addToMemoirFragment);
+                //content_frame
+                fragmentTransaction.addToBackStack(null);
+                fragmentTransaction.commit();
+            }
+        });
 
         return view;
     }
 
-    /*
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        // Inflate the View for this fragment
-        View view = inflater.inflate(R.layout.fragment_view, container, false);
+    // https://api.themoviedb.org/3/movie/150540?api_key=###&append_to_response=credits
+    public class SearchMovieDetailTask extends AsyncTask<String, Void, String>{
+        @Override
+        protected String doInBackground(String... strings) {
+            String url_head = "https://api.themoviedb.org/3/movie/";
+            String url_middle = "?api_key=";
+            String url_end = "&append_to_response=credits";
+            String url = url_head + strings[0] + url_middle + getString(R.string.tmdb_api_key) + url_end;
+            return SearchMovieAPI.searchByUrl(url);
+        }
 
-        db = FirebaseFirestore.getInstance();
-        FirebaseFirestoreSettings settings = new FirebaseFirestoreSettings.Builder()
-                .setPersistenceEnabled(true)
-                .build();
-        db.setFirestoreSettings(settings);
+        @Override
+        protected void onPostExecute(String s) {
+            try {
+                JSONObject json = new JSONObject(s);
+                JSONArray genres = json.getJSONArray("genres");
+                JSONObject credits = json.getJSONObject("credits");
 
-        Format formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String date = formatter.format(new Date());
+                String genreString = "";
+                for (int i = 0; i < genres.length(); i++){
+                    genreString += genres.getJSONObject(i).getString("name") + "\n";
+                }
+                genreString = genreString.substring(0,genreString.length()-1);
+                genre.setText(genreString);
 
-        Map<String, Object> movie = new HashMap<>();
-        movie.put("title", "Jack Reacher");
-        movie.put("release_date", "2012-12-21");
-        movie.put("add_date", date );
+                String castStirng = "";
+                JSONArray casts = credits.getJSONArray("cast");
+                for (int i = 0; i < casts.length(); i ++){
+                    castStirng += casts.getJSONObject(i).getString("name") + "\n";
+                }
+                castStirng = castStirng.substring(0,castStirng.length()-1);
+                cast.setText(castStirng);
 
-        // Add a new document with a generated ID
-        db.collection("watchlist")
-                .add(movie)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
-                        Log.d(TAG, "DocumentSnapshot added with ID: " + documentReference.getId());
+                String directors = "";
+                JSONArray crews = credits.getJSONArray("crew");
+                for (int i = 0; i < crews.length(); i ++){
+                    if (crews.getJSONObject(i).getString("job").equals("Director")) {
+                        directors += crews.getJSONObject(i).getString("name") + "\n";
                     }
-                })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Error adding document", e);
-                    }
-                });
-        return view;
+                }
+                directors = directors.substring(0,directors.length()-1);
+                director.setText(directors);
+
+                releaseDate.setText(json.getString("release_date"));
+                movieName.setText(json.getString("original_title"));
+                storyline.setText(json.getString("overview"));
+                String scoreString = json.getString("vote_average");
+                // this field has a default value 0.0
+                if (!scoreString.equals("0.0")){
+                    //score.setText(scoreString);
+                    score.setRating(Float.valueOf(scoreString)/2);
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
-     */
+
+//https://www.tutlane.com/tutorial/android/android-ratingbar-with-examples get user score
 }
-//tmdb first get movie id
-//then http://api.themoviedb.org/3/movie/75780/videos?api_key=b43e380b2a3295ab244b24f4887d9d0d get a key from this link
-// or https://api.themoviedb.org/3/movie/297762?api_key=###&append_to_response=videos directly
-// then go to youtube  https://www.youtube.com/watch?v=
 
-// article
-// https://www.androhub.com/implement-youtube-player-fragment-android-app/
-//https://www.oodlestechnologies.com/blogs/How-to-play-youtube-video-on-fragment-in-Android/
-// https://www.programcreek.com/java-api-examples/?api=com.google.android.youtube.player.YouTubePlayerSupportFragment
-
-
-
-//https://api.themoviedb.org/3/movie/75780?api_key=b43e380b2a3295ab244b24f4887d9d0d&append_to_response=videos
-//b43e380b2a3295ab244b24f4887d9d0d
-//http://api.themoviedb.org/3/movie/75780/videos?api_key=b43e380b2a3295ab244b24f4887d9d0d
-//https://www.youtube.com/watch?v=JWU8gw1zis8
-//533ec6c6c3a368544800702c
-//http://api.themoviedb.org/3/movie/550/videos?api_key=b43e380b2a3295ab244b24f4887d9d0d
-//https://api.themoviedb.org/3/search/movie?api_key=b43e380b2a3295ab244b24f4887d9d0d&query=Jack+Reacher
