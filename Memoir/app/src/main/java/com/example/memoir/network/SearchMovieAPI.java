@@ -34,7 +34,6 @@ public class SearchMovieAPI {
         } finally {
             connection.disconnect();
         }
-        System.out.println("sratttttttttweeeeee"+textResult);
         return textResult;
     }
 
@@ -59,7 +58,6 @@ public class SearchMovieAPI {
         } finally {
             connection.disconnect();
         }
-        System.out.println("sratttttttttweeeeee"+textResult.substring(0,100));
         return textResult;
     }
 }

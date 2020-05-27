@@ -1,6 +1,5 @@
 package com.example.memoir.network;
 
-import android.util.Log;
 
 import com.example.memoir.entity.Credential;
 import com.example.memoir.entity.Person;
@@ -67,7 +66,6 @@ public class NetworkConnection {
         Gson gson = new Gson();
         String personJson = gson.toJson(person);
         String result = "";
-        Log.i("personJson", personJson);
         final String methodPath = "memoir.person";
         RequestBody body = RequestBody.create(personJson, JSON);
         Request request = new Request.Builder().url(BASE_URL + methodPath).post(body).build();

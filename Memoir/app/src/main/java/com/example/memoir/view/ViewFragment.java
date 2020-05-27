@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.memoir.R;
 import com.example.memoir.memoir.AddToMemoirFragment;
 import com.example.memoir.network.SearchMovieAPI;
-import com.google.gson.JsonElement;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

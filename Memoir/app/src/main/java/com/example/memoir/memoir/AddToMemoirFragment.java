@@ -55,6 +55,8 @@ public class AddToMemoirFragment extends Fragment implements DatePickerDialog.On
             }
         });
 
+        SearchCinemaTask searchCinemaTask = new SearchCinemaTask();
+        searchCinemaTask.execute();
 
         return view;
     }
@@ -87,6 +89,9 @@ public class AddToMemoirFragment extends Fragment implements DatePickerDialog.On
         @Override
         protected void onPostExecute(String s) {
             Log.i("cinema", s);
+            //[{"id":1,"location":"1341 Dandenong Road","name":"Hoyts Chadstone","postcode":3148},
+            //{"id":2,"location":"Pinewood Shopping Centre, Blackburn Rd, Mount Waverley","name":"Waverley Cinema","postcode":3149},
+            //{"id":3,"location":"285/287 Springvale Rd","name":"Village Cinemas Century City","postcode":3150}]
         }
     }
 }
