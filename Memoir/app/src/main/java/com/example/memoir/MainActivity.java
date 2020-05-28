@@ -17,6 +17,7 @@ import android.view.MenuItem;
 
 import com.example.memoir.home.HomeFragment;
 import com.example.memoir.map.MapFragment;
+import com.example.memoir.memoir.AddCinemaFragment;
 import com.example.memoir.memoir.MemoirFragment;
 import com.example.memoir.network.NetworkConnection;
 import com.example.memoir.report.ReportFragment;

@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+
+    <TextView
+        android:id="@+id/add_cinema"
+        android:text="Enter New Cinema Information"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:textSize="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/name_text"
+        android:gravity="center"
+        android:layout_below="@id/add_cinema"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="50dp"
+        android:text="Cinema Name:"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/name"
+        android:layout_below="@id/add_cinema"
+        android:layout_marginTop="35dp"
+        android:layout_toEndOf="@id/name_text"
+        android:layout_marginLeft="10dp"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/location_text"
+        android:layout_below="@id/name"
+        android:gravity="center"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="50dp"
+        android:text="Location:"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/location"
+        android:layout_below="@id/name"
+        android:layout_marginTop="35dp"
+        android:layout_toEndOf="@id/name_text"
+        android:layout_marginLeft="10dp"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/postcode_text"
+        android:layout_below="@id/location"
+        android:gravity="center"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="50dp"
+        android:text="Postcode:"
+        android:layout_width="100dp"
+        android:layout_height="wrap_content"/>
+    <EditText
+        android:id="@+id/postcode"
+        android:layout_below="@id/location"
+        android:layout_marginTop="35dp"
+        android:layout_toEndOf="@id/name_text"
+        android:layout_marginLeft="10dp"
+        android:layout_width="220dp"
+        android:layout_height="wrap_content"/>
+
+    <Button
+        android:id="@+id/submit"
+        android:layout_below="@id/postcode"
+        android:layout_marginTop="70dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Submit"/>
+
+</RelativeLayout>

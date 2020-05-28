@@ -1,6 +1,9 @@
 package com.example.memoir.network;
 
 
+import android.util.Log;
+
+import com.example.memoir.entity.Cinema;
 import com.example.memoir.entity.Credential;
 import com.example.memoir.entity.Person;
 import com.example.memoir.util.Encrypt;
@@ -129,4 +132,36 @@ public class NetworkConnection {
         return results;
     }
 
+    public static int countCinema(){
+        client = new OkHttpClient();
+        final String methodPath = "memoir.cinema/count";
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL + methodPath);
+        Request request = builder.build();
+        try {
+            Response response = client.newCall(request).execute();
+            results = response.body().string();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.i("number of cinema", results);
+        return Integer.parseInt(results);
+    }
+
+    public static String addCinema(Cinema cinema){
+        Gson gson = new Gson();
+        String cinemaJson = gson.toJson(cinema);
+        String result = "";
+        final String methodPath = "memoir.cinema";
+        RequestBody body = RequestBody.create(cinemaJson, JSON);
+        Request request = new Request.Builder().url(BASE_URL + methodPath).post(body).build();
+        try {
+            Response response = client.newCall(request).execute();
+            result = response.body().string();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.i("result of add a cinema", results);
+        return result;
+    }
 }
