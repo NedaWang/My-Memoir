@@ -3,14 +3,12 @@ package com.example.memoir.memoir;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -19,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,7 +26,11 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.memoir.R;
+import com.example.memoir.entity.Cinema;
+import com.example.memoir.entity.Memoir;
+import com.example.memoir.entity.Person;
 import com.example.memoir.network.NetworkConnection;
+import com.example.memoir.util.DateUtil;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -36,6 +39,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class AddToMemoirFragment extends Fragment implements DatePickerDialog.OnDateSetListener {
@@ -52,15 +56,18 @@ public class AddToMemoirFragment extends Fragment implements DatePickerDialog.On
     List<String> cinemaInfoList;
     ArrayAdapter<String> cinemaSpinnerAdapter;
 
+    List<Cinema> cinemaList;
+
     ImageView addCinema;
 
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_add_to_memoir,container,false);
 
         SharedPreferences sharedPref= getActivity().getSharedPreferences("Movies", Context.MODE_PRIVATE);
-        String movie_name= sharedPref.getString("movie_name",null);
-        String release_date= sharedPref.getString("release_date",null);
+        final String movie_name= sharedPref.getString("movie_name",null);
+        final String release_date= sharedPref.getString("release_date",null);
         String movie_image= sharedPref.getString("movie_image",null);
+
 
         movieName = view.findViewById(R.id.movie_name);
         releaseDate = view.findViewById(R.id.release_date);
@@ -106,7 +113,22 @@ public class AddToMemoirFragment extends Fragment implements DatePickerDialog.On
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("add to memoir:", score.getRating()+comment.getText().toString()+cinemas.getSelectedItem().toString());
+                Cinema c = new Cinema((cinemas.getSelectedItemPosition()+1)+"");
+                SharedPreferences sharedPreferences = getActivity().getSharedPreferences("Message", Context.MODE_PRIVATE);
+                Person p = new Person(sharedPreferences.getString("id", null));
+                Memoir m = new Memoir();
+                m.setName(movie_name);
+                m.setReleaseDate(DateUtil.convertDobToServerFormat(release_date));
+                m.setWatchDate(DateUtil.convertDobToServerFormat(watchDate.getText().toString()));
+                m.setComment(comment.getText().toString());
+                m.setScore(((int)(score.getRating()*20))+"");
+                m.setPerson(p);
+                m.setCinema(c);
+                AddMemoirTask addMemoirTask = new AddMemoirTask();
+                addMemoirTask.execute(m);
+
+
+                //Log.i("add to memoir:", score.getRating()+comment.getText().toString()+cinemas.getSelectedItem().toString());
             }
         });
 
@@ -121,6 +143,8 @@ public class AddToMemoirFragment extends Fragment implements DatePickerDialog.On
                 Calendar.getInstance().get(Calendar.YEAR),
                 Calendar.getInstance().get(Calendar.MONTH),
                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
+        // set max date
+        datePickerDialog.getDatePicker().setMaxDate(new Date().getTime());
         datePickerDialog.show();
     }
 
@@ -131,26 +155,38 @@ public class AddToMemoirFragment extends Fragment implements DatePickerDialog.On
         watchDate.setText(date);
     }
 
-    private class SearchCinemaTask extends AsyncTask<Void, Void, String>{
+    private class SearchCinemaTask extends AsyncTask<Void, Void, List<Cinema>>{
 
         @Override
-        protected String doInBackground(Void... voids) {
+        protected List<Cinema> doInBackground(Void... voids) {
             return NetworkConnection.getCinemas();
         }
 
         @Override
-        protected void onPostExecute(String s) {
-            Log.i("cinema", s);
-            //[{"id":1,"location":"1341 Dandenong Road","name":"Hoyts Chadstone","postcode":3148},
-            //{"id":2,"location":"Pinewood Shopping Centre, Blackburn Rd, Mount Waverley","name":"Waverley Cinema","postcode":3149},
-            //{"id":3,"location":"285/287 Springvale Rd","name":"Village Cinemas Century City","postcode":3150}]
-            JsonArray jsons = new JsonParser().parse(s).getAsJsonArray();
-            for (JsonElement e : jsons){
-                JsonObject j = e.getAsJsonObject();
-                cinemaInfoList.add(j.get("name").getAsString() + ", " + j.get("postcode").getAsString());
+        protected void onPostExecute(List<Cinema> cinemaFromDB) {
+            cinemaList = cinemaFromDB;
+            for (Cinema c: cinemaFromDB){
+                cinemaInfoList.add(c.getName() + ", " + c.getPostcode());
             }
-
             cinemas.setAdapter(cinemaSpinnerAdapter);
         }
     }
+
+    private class AddMemoirTask extends AsyncTask<Memoir, Void, String>{
+
+        @Override
+        protected String doInBackground(Memoir... memoirs) {
+            int id = NetworkConnection.countMemoir() + 1;
+            Memoir memoir = memoirs[0];
+            memoir.setId(id+"");
+            return NetworkConnection.addMemoir(memoir);
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Toast.makeText(getActivity(), "Add Memoir successfully.", Toast.LENGTH_SHORT).show();
+            getActivity().onBackPressed();
+        }
+    }
+
 }

@@ -18,6 +18,10 @@ public class Person implements Parcelable {
 
     public Person(){}
 
+    public Person(String id){
+        this.id = id;
+    }
+
     public Person(String id, String firstname, String surname, String gender,
                   String dob, String address, String state, String postcode, String email) {
         this.id = id;

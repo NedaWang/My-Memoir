@@ -9,6 +9,10 @@ public class Cinema {
     public Cinema() {
     }
 
+    public Cinema(String id){
+        this.id = id;
+    }
+
     public Cinema(String id, String name, String location, String postcode) {
         this.id = id;
         this.name = name;

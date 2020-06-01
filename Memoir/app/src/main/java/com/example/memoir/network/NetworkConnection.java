@@ -5,9 +5,17 @@ import android.util.Log;
 
 import com.example.memoir.entity.Cinema;
 import com.example.memoir.entity.Credential;
+import com.example.memoir.entity.Memoir;
 import com.example.memoir.entity.Person;
 import com.example.memoir.util.Encrypt;
 import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -117,7 +125,7 @@ public class NetworkConnection {
         return results;
     }
 
-    public static String getCinemas(){
+    public static List<Cinema> getCinemas(){
         client = new OkHttpClient();
         final String methodPath = "memoir.cinema";
         Request.Builder builder = new Request.Builder();
@@ -129,7 +137,14 @@ public class NetworkConnection {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return results;
+        List<Cinema> cinemas = new ArrayList<>();
+        JsonArray jsons = new JsonParser().parse(results).getAsJsonArray();
+        for (JsonElement e : jsons){
+            JsonObject j = e.getAsJsonObject();
+            Cinema cinema = new Cinema(j.get("id").getAsString(),j.get("name").getAsString(),j.get("location").getAsString(),j.get("postcode").getAsString());
+            cinemas.add(cinema);
+        }
+        return cinemas;
     }
 
     public static int countCinema(){
@@ -144,7 +159,21 @@ public class NetworkConnection {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.i("number of cinema", results);
+        return Integer.parseInt(results);
+    }
+
+    public static int countMemoir(){
+        client = new OkHttpClient();
+        final String methodPath = "memoir.memoir/count";
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL + methodPath);
+        Request request = builder.build();
+        try {
+            Response response = client.newCall(request).execute();
+            results = response.body().string();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return Integer.parseInt(results);
     }
 
@@ -161,7 +190,24 @@ public class NetworkConnection {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        Log.i("result of add a cinema", results);
+        return result;
+    }
+
+    public static String addMemoir(Memoir memoir){
+        Gson gson = new Gson();
+        String cinemaJson = gson.toJson(memoir);
+        Log.i("memoir json: ", cinemaJson);
+        String result = "";
+        final String methodPath = "memoir.memoir";
+        RequestBody body = RequestBody.create(cinemaJson, JSON);
+        Request request = new Request.Builder().url(BASE_URL + methodPath).post(body).build();
+        try {
+            Response response = client.newCall(request).execute();
+            result = response.body().string();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        //Log.i("result of add a memoir", results);
         return result;
     }
 }
