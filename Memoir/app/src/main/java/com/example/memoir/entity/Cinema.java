@@ -13,6 +13,11 @@ public class Cinema {
         this.id = id;
     }
 
+    public Cinema(String id, String postcode){
+        this.id = id;
+        this.postcode = postcode;
+    }
+
     public Cinema(String id, String name, String location, String postcode) {
         this.id = id;
         this.name = name;

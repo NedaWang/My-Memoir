@@ -8,6 +8,7 @@ import com.example.memoir.entity.Credential;
 import com.example.memoir.entity.Memoir;
 import com.example.memoir.entity.Person;
 import com.example.memoir.util.Encrypt;
+import com.example.memoir.util.JsonConvert;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -106,25 +107,7 @@ public class NetworkConnection {
         return result;
     }
 
-    public String topFiveMovies(String personId) {
-        final String methodPath = "memoir.memoir/findTopFiveByIdInCurrentYear/" + personId;
-        Request.Builder builder = new Request.Builder();
-        builder.url(BASE_URL + methodPath);
-        Request request = builder.build();
-        try {
-            Response response = client.newCall(request).execute();
-            if (response.code() == 200) {
-                results = response.body().string();
-            } else {
-                results = "fail";
-            }
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return results;
-    }
-
+    // get cinemas
     public static List<Cinema> getCinemas(){
         client = new OkHttpClient();
         final String methodPath = "memoir.cinema";
@@ -147,6 +130,7 @@ public class NetworkConnection {
         return cinemas;
     }
 
+    // count cinemas
     public static int countCinema(){
         client = new OkHttpClient();
         final String methodPath = "memoir.cinema/count";
@@ -162,21 +146,7 @@ public class NetworkConnection {
         return Integer.parseInt(results);
     }
 
-    public static int countMemoir(){
-        client = new OkHttpClient();
-        final String methodPath = "memoir.memoir/count";
-        Request.Builder builder = new Request.Builder();
-        builder.url(BASE_URL + methodPath);
-        Request request = builder.build();
-        try {
-            Response response = client.newCall(request).execute();
-            results = response.body().string();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return Integer.parseInt(results);
-    }
-
+    // add cinima
     public static String addCinema(Cinema cinema){
         Gson gson = new Gson();
         String cinemaJson = gson.toJson(cinema);
@@ -193,6 +163,23 @@ public class NetworkConnection {
         return result;
     }
 
+    // count memoir for calculate id
+    public static int countMemoir(){
+        client = new OkHttpClient();
+        final String methodPath = "memoir.memoir/count";
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL + methodPath);
+        Request request = builder.build();
+        try {
+            Response response = client.newCall(request).execute();
+            results = response.body().string();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return Integer.parseInt(results);
+    }
+
+    // add memoir
     public static String addMemoir(Memoir memoir){
         Gson gson = new Gson();
         String cinemaJson = gson.toJson(memoir);
@@ -209,5 +196,41 @@ public class NetworkConnection {
         }
         //Log.i("result of add a memoir", results);
         return result;
+    }
+
+    // get memoir by id
+    public static List<Memoir> getMemoirByPersonID(String id){
+        client = new OkHttpClient();
+        final String methodPath = "memoir.memoir/findByPersonID/" + id;
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL + methodPath);
+        Request request = builder.build();
+        try {
+            Response response = client.newCall(request).execute();
+            results = response.body().string();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return JsonConvert.stringToMemoirs(results);
+    }
+
+    public String login1(String username, String password) {
+        String param = username + "/" + Encrypt.md5(password);
+        final String methodPath = "memoir.credential/login/" + param;
+        Request.Builder builder = new Request.Builder();
+        builder.url(BASE_URL + methodPath);
+        Request request = builder.build();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.code() == 200) {
+                results = response.body().string();
+            } else {
+                results = "fail";
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return results;
     }
 }

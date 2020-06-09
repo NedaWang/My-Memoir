@@ -64,19 +64,7 @@ public class JsonConvert {
         return c;
     }
 
-    // one cinema object
-    public static Cinema jsonToCinema(JSONObject j) {
-        Cinema c = new Cinema();
-        try {
-            c.setId(j.getString("id"));
-            c.setLocation(j.getString("location"));
-            c.setName(j.getString("name"));
-            c.setPostcode(j.getString("postcode"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return c;
-    }
+
 
     // multiple memoir objects
     public static List<Memoir> stringToMemoirs(String s) {
@@ -103,11 +91,17 @@ public class JsonConvert {
             m = new Memoir();
             m.setName(j.get("name").getAsString());
             m.setReleaseDate(j.get("releasedate").getAsString());
+            m.setWatchDate(j.get("watchdate").getAsString());
+            m.setComment(j.get("comment").getAsString());
             m.setScore(j.get("score").getAsString());
+
+            JsonObject cinemaJson = new JsonParser().parse(j.get("cinema").getAsString()).getAsJsonObject();
+            Cinema cinema = new Cinema(cinemaJson.get("id").getAsString(),cinemaJson.get("name").getAsString(),
+                    cinemaJson.get("location").getAsString(),cinemaJson.get("postcode").getAsString());
+            m.setCinema(cinema);
             memoirs.add(m);
         }
-
-
         return memoirs;
     }
+
 }

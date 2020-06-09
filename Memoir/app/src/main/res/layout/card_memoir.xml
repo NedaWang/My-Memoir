@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<HorizontalScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:fillViewport="true">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="220dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/poster"
+            android:layout_width="150dp"
+            android:layout_height="200dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="20dp"
+            />
+
+        <!-- movie name -->
+        <TextView
+            android:id="@+id/name_text"
+            android:text="Name:"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/poster"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_toEndOf="@id/name_text"
+            android:layout_marginLeft="10dp"/>
+
+        <!-- release date -->
+        <TextView
+            android:id="@+id/release_date_text"
+            android:text="Rlease Date:"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@id/poster"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/release_date"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/name"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@id/name_text"
+            android:layout_marginLeft="10dp"/>
+
+        <!-- watch date -->
+        <TextView
+            android:id="@+id/watch_date_text"
+            android:text="Watch Date:"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/release_date"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@id/poster"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/watch_date"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/release_date"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@id/name_text"
+            android:layout_marginLeft="10dp"/>
+
+        <!-- suburb -->
+        <TextView
+            android:id="@+id/suburb_text"
+            android:text="Suburb:"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/watch_date"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@id/poster"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/suburb"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/watch_date"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@id/name_text"
+            android:layout_marginLeft="10dp"/>
+
+        <!-- Comment -->
+        <TextView
+            android:id="@+id/Comment_text"
+            android:text="Comment:"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/suburb"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@id/poster"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/comment"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/suburb"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@id/name_text"
+            android:layout_marginLeft="10dp"/>
+
+        <!-- Score -->
+        <TextView
+            android:id="@+id/Score_text"
+            android:text="Score:"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/comment"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@id/poster"
+            android:layout_marginLeft="10dp"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/score"
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/comment"
+            android:layout_marginTop="2dp"
+            android:layout_toEndOf="@id/name_text"
+            android:layout_marginLeft="10dp"/>
+
+        <ImageView
+            android:id="@+id/delete"
+            android:layout_alignParentBottom="true"
+            android:layout_toEndOf="@id/poster"
+            android:layout_marginLeft="100dp"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_weight="1"
+            android:padding="8dp"
+            android:src="@android:drawable/ic_menu_close_clear_cancel"
+            android:tint="@android:color/holo_red_dark" />
+
+
+    </RelativeLayout>
+</HorizontalScrollView>
