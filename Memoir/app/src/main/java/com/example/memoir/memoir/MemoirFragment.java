@@ -47,27 +47,14 @@ public class MemoirFragment extends Fragment {
         return view;
     }
 
-    private class SearchMemoirTask extends AsyncTask<String, Void, List<Memoir>>{
-
+    private class SearchMemoirTask extends AsyncTask<String, Void, String>{
         @Override
-        protected List<Memoir> doInBackground(String... strings) {
-            OkHttpClient client = new OkHttpClient();
-            final String methodPath = "http://10.0.2.2:8080/MemoirDB/webresources/memoir.memoir/findByPersonID/" + strings[0];
-            Request.Builder builder = new Request.Builder();
-            builder.url(methodPath);
-            Request request = builder.build();
-            String results = "result";
-            try {
-                Response response = client.newCall(request).execute();
-                results = response.body().string();
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            return JsonConvert.stringToMemoirs(results);
+        protected String doInBackground(String... strings) {
+            return NetworkConnection.getMemoirByPersonID(strings[0]);
         }
-
         @Override
-        protected void onPostExecute(List<Memoir> memoirs) {
+        protected void onPostExecute(String s) {
+            List<Memoir> memoirs = JsonConvert.stringToMemoirs(s);
             for (Memoir m : memoirs){
                 Log.i("memoirname", m.getName());
             }

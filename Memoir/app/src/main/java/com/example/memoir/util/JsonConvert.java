@@ -95,7 +95,7 @@ public class JsonConvert {
             m.setComment(j.get("comment").getAsString());
             m.setScore(j.get("score").getAsString());
 
-            JsonObject cinemaJson = new JsonParser().parse(j.get("cinema").getAsString()).getAsJsonObject();
+            JsonObject cinemaJson = j.getAsJsonObject("cinema");
             Cinema cinema = new Cinema(cinemaJson.get("id").getAsString(),cinemaJson.get("name").getAsString(),
                     cinemaJson.get("location").getAsString(),cinemaJson.get("postcode").getAsString());
             m.setCinema(cinema);

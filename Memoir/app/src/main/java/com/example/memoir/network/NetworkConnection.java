@@ -199,7 +199,7 @@ public class NetworkConnection {
     }
 
     // get memoir by id
-    public static List<Memoir> getMemoirByPersonID(String id){
+    public static String getMemoirByPersonID(String id){
         client = new OkHttpClient();
         final String methodPath = "memoir.memoir/findByPersonID/" + id;
         Request.Builder builder = new Request.Builder();
@@ -211,7 +211,7 @@ public class NetworkConnection {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return JsonConvert.stringToMemoirs(results);
+        return results;
     }
 
     public String login1(String username, String password) {
