@@ -1,6 +1,7 @@
 package com.example.memoir.memoir;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,11 @@ import java.util.List;
 public class RecyclerViewAdapter extends RecyclerView.Adapter <RecyclerViewAdapter.ViewHolder>{
 
     private List<Memoir> memoirs;
+
+    // Pass in the contact array into the constructor
+    public RecyclerViewAdapter(List<Memoir> memoirs) {
+        this.memoirs = memoirs;
+    }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         // ViewHolder should contain variables for all the views in each row of the list
@@ -65,6 +71,15 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter <RecyclerViewAdapt
         TextView tvComment = holder.comment;
         TextView tvScore = holder.score;
         ImageView ivDelete = holder.delete;
+
+        tvName.setText(memoir.getName());
+        tvName.setTypeface(Typeface.DEFAULT_BOLD);
+        tvReleaseDate.setText(memoir.getReleaseDate().substring(0,10));
+        tvWatchDate.setText(memoir.getWatchDate().substring(0,10));
+        tvSuburb.setText(memoir.getCinema().getPostcode());
+        tvComment.setText(memoir.getComment());
+        tvScore.setText(memoir.getScore());
+
         ivDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -78,10 +93,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter <RecyclerViewAdapt
     public int getItemCount() {
         return memoirs.size();
     }
-    // Pass in the contact array into the constructor
-    public RecyclerViewAdapter(List<Memoir> memoirs) {
-        this.memoirs = memoirs;
-    }
+
     public void addUnits(List<Memoir> units) {
         this.memoirs = units;
         notifyDataSetChanged();

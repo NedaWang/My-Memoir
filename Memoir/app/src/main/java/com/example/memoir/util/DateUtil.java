@@ -23,6 +23,7 @@ public class DateUtil {
         }
     }
 
+    // from date object to standard string
     public static String toServerFormat(Date date){
         return formatter.format(date);
     }

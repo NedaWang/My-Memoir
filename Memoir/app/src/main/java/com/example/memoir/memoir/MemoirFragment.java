@@ -8,11 +8,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.memoir.R;
@@ -31,8 +35,9 @@ public class MemoirFragment extends Fragment {
     private RecyclerView recyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-    private List<Memoir> units;
+    private List<Memoir> memoirs;
     private RecyclerViewAdapter adapter;
+
 
     @Nullable
     @Override
@@ -44,8 +49,13 @@ public class MemoirFragment extends Fragment {
         SearchMemoirTask searchMemoirTask = new SearchMemoirTask();
         searchMemoirTask.execute(personID);
 
+        recyclerView = view.findViewById(R.id.recyclerView);
+
+
+
         return view;
     }
+
 
     private class SearchMemoirTask extends AsyncTask<String, Void, String>{
         @Override
@@ -54,10 +64,15 @@ public class MemoirFragment extends Fragment {
         }
         @Override
         protected void onPostExecute(String s) {
-            List<Memoir> memoirs = JsonConvert.stringToMemoirs(s);
-            for (Memoir m : memoirs){
-                Log.i("memoirname", m.getName());
-            }
+            memoirs = JsonConvert.stringToMemoirs(s);
+
+            adapter = new RecyclerViewAdapter(memoirs);
+
+            recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), LinearLayoutManager.VERTICAL));
+            recyclerView.setAdapter(adapter);
+
+            layoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(layoutManager);
         }
     }
 }
