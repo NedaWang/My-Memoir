@@ -33,7 +33,6 @@ import okhttp3.Response;
 public class MemoirFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
     private List<Memoir> memoirs;
     private RecyclerViewAdapter adapter;
@@ -50,8 +49,6 @@ public class MemoirFragment extends Fragment {
         searchMemoirTask.execute(personID);
 
         recyclerView = view.findViewById(R.id.recyclerView);
-
-
 
         return view;
     }
@@ -75,4 +72,8 @@ public class MemoirFragment extends Fragment {
             recyclerView.setLayoutManager(layoutManager);
         }
     }
+
+    // https://api.themoviedb.org/3/discover/movie?api_key=b43e380b2a3295ab244b24f4887d9d0d&query=Mulan
+    //https://api.themoviedb.org/3/search/movie?api_key=b43e380b2a3295ab244b24f4887d9d0d&query=Mulan&primary_release_year=1998
+    // primary_release_year
 }

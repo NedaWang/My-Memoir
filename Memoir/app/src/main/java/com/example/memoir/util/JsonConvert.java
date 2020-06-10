@@ -1,5 +1,7 @@
 package com.example.memoir.util;
 
+import android.util.Log;
+
 import com.example.memoir.entity.Cinema;
 import com.example.memoir.entity.Credential;
 import com.example.memoir.entity.Memoir;
@@ -102,6 +104,22 @@ public class JsonConvert {
             memoirs.add(m);
         }
         return memoirs;
+    }
+
+    // param: result from api and an exact date.
+    public static String extractPosterBasedOnNameAndYear(String jsonString, String releaseDate){
+        String result = "";
+        JsonObject info = new JsonParser().parse(jsonString).getAsJsonObject();
+        JsonArray movies = info.getAsJsonArray("results");
+        for (JsonElement movie : movies) {
+            JsonObject j = movie.getAsJsonObject();
+            if (j.get("release_date").getAsString().equals(releaseDate)){
+                if (!j.get("poster_path").getAsString().equals("null")){
+                    result = j.get("poster_path").getAsString();
+                }
+            }
+        }
+        return result;
     }
 
 }

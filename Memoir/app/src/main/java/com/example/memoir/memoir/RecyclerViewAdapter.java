@@ -2,6 +2,8 @@ package com.example.memoir.memoir;
 
 import android.content.Context;
 import android.graphics.Typeface;
+import android.os.AsyncTask;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +15,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.memoir.R;
 import com.example.memoir.entity.Memoir;
+import com.example.memoir.network.SearchMovieAPI;
+import com.example.memoir.util.JsonConvert;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
+
 
 public class RecyclerViewAdapter extends RecyclerView.Adapter <RecyclerViewAdapter.ViewHolder>{
 
     private List<Memoir> memoirs;
+    String url;
 
     // Pass in the contact array into the constructor
     public RecyclerViewAdapter(List<Memoir> memoirs) {
@@ -34,9 +41,12 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter <RecyclerViewAdapt
         public TextView comment;
         public TextView score;
         public ImageView delete;
+        public androidx.appcompat.widget.AppCompatImageView poster;
         // a constructor that accepts the entire View (itemView)
         // provides a reference and access to all the views in each row
-        public ViewHolder(View itemView) { super(itemView);
+        public ViewHolder(View itemView) {
+            super(itemView);
+
             name = itemView.findViewById(R.id.name);
             release_date = itemView.findViewById(R.id.release_date);
             watch_date=itemView.findViewById(R.id.watch_date);
@@ -44,6 +54,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter <RecyclerViewAdapt
             comment=itemView.findViewById(R.id.comment);
             score=itemView.findViewById(R.id.score);
             delete = itemView.findViewById(R.id.delete);
+            poster = itemView.findViewById(R.id.poster);
         }
     }
 
@@ -54,8 +65,8 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter <RecyclerViewAdapt
         Context context = parent.getContext();
         LayoutInflater inflater = LayoutInflater.from(context);
         // Inflate the view from an XML layout file
-        View unitsView = inflater.inflate(R.layout.card_memoir, parent, false); // construct the viewholder with the new view
-        ViewHolder viewHolder = new ViewHolder(unitsView);
+        View memoirView = inflater.inflate(R.layout.card_memoir, parent, false); // construct the viewholder with the new view
+        ViewHolder viewHolder = new ViewHolder(memoirView);
         return viewHolder;
     }
 
@@ -71,6 +82,7 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter <RecyclerViewAdapt
         TextView tvComment = holder.comment;
         TextView tvScore = holder.score;
         ImageView ivDelete = holder.delete;
+        androidx.appcompat.widget.AppCompatImageView imPoster = holder.poster;
 
         tvName.setText(memoir.getName());
         tvName.setTypeface(Typeface.DEFAULT_BOLD);
@@ -87,6 +99,13 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter <RecyclerViewAdapt
                 notifyDataSetChanged();
             }
         });
+
+        SearchPosterTask searchPosterTask = new SearchPosterTask(imPoster);
+        searchPosterTask.execute(memoir.getName(), memoir.getReleaseDate());
+
+        //final String url = "https://image.tmdb.org/t/p/w500" + movieImage;
+        //String url = "https://image.tmdb.org/t/p/w500/" + movieImage;
+        //Picasso.get().load(url).into(imPoster);
     }
 
     @Override
@@ -94,9 +113,27 @@ public class RecyclerViewAdapter extends RecyclerView.Adapter <RecyclerViewAdapt
         return memoirs.size();
     }
 
-    public void addUnits(List<Memoir> units) {
-        this.memoirs = units;
-        notifyDataSetChanged();
+
+    private class SearchPosterTask extends AsyncTask<String, Void, String>{
+        androidx.appcompat.widget.AppCompatImageView imPoster;
+        public SearchPosterTask(androidx.appcompat.widget.AppCompatImageView imPoster){
+            this.imPoster = imPoster;
+        }
+
+        @Override
+        protected String doInBackground(String... strings) {
+            String info = SearchMovieAPI.searchMovieByNameAndYear(strings[0], strings[1].substring(0,4)); // param is name and year
+            String result = JsonConvert.extractPosterBasedOnNameAndYear(info, strings[1].substring(0,10));
+            Log.i("posterPath", result);
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            //final String url = "https://image.tmdb.org/t/p/w500" + movieImage;
+            url = "https://image.tmdb.org/t/p/w500/" + s;
+            Picasso.get().load(url).into(imPoster);
+        }
     }
 
 }
