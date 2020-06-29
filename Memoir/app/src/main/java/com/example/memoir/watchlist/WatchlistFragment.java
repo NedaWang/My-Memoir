@@ -48,6 +48,9 @@ public class WatchlistFragment extends Fragment {
                 .build();
         db.setFirestoreSettings(settings);
 
+        // set user id as collection name
+        // add movie as an document
+
         // name of the movie, the release date (in case it is a remake), and the date and time it was added to Watchlist.
         db.collection("watchlist")
                 .get()

@@ -30,7 +30,6 @@ import org.json.JSONObject;
 public class SearchFragment extends Fragment {
 
     private EditText input;
-    private TextView output;
     private Button search;
 
     TableLayout tableLayout;

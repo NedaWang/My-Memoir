@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
         //networkConnection = new NetworkConnection();
 
+
         // fake data
         SharedPreferences sharedPreferences = getSharedPreferences("Message", Context.MODE_PRIVATE);
         SharedPreferences.Editor spEditor = sharedPreferences.edit();

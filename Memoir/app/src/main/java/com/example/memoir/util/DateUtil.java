@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.text.ParseException;
 
+
 public class DateUtil {
 
     public final static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssXXX");
@@ -25,6 +26,12 @@ public class DateUtil {
 
     // from date object to standard string
     public static String toServerFormat(Date date){
+        return formatter.format(date);
+    }
+
+    public static String getCurrentTime(){
+        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss");
+        Date date = new Date();
         return formatter.format(date);
     }
 

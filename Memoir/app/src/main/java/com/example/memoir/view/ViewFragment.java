@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +21,19 @@ import androidx.fragment.app.FragmentTransaction;
 import com.example.memoir.R;
 import com.example.memoir.memoir.AddToMemoirFragment;
 import com.example.memoir.network.SearchMovieAPI;
+import com.example.memoir.util.DateUtil;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import static android.content.ContentValues.TAG;
 
 public class ViewFragment extends Fragment {
     //FirebaseFirestore db;
@@ -36,6 +47,7 @@ public class ViewFragment extends Fragment {
     TextView director;
 
     Button addToMemoir;
+    Button addToWatchlist;
 
     @Nullable
     @Override
@@ -70,6 +82,21 @@ public class ViewFragment extends Fragment {
                 //content_frame
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
+            }
+        });
+
+        addToWatchlist = view.findViewById(R.id.add_to_watchlist);
+        addToWatchlist.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedPreferences sharedPref= getActivity().getSharedPreferences("Message", Context.MODE_PRIVATE);
+                String userID= sharedPref.getString("id",null);
+                // set user id as collection name
+                // add movie as an document
+                //Toast.makeText(getActivity(),userID,Toast.LENGTH_SHORT).show();
+                AddToWatchlistTask addToWatchlistTask = new AddToWatchlistTask();
+                addToWatchlistTask.equals(userID);
+
             }
         });
 
@@ -132,6 +159,33 @@ public class ViewFragment extends Fragment {
             } catch (Exception e) {
                 e.printStackTrace();
             }
+        }
+    }
+
+    public class AddToWatchlistTask extends AsyncTask<String, Void, Void> {
+
+        @Override
+        protected Void doInBackground(String... strings) {
+            FirebaseFirestore db = FirebaseFirestore.getInstance();
+            Log.i("try to add to cloud1", "step1");
+            //package a movie info into a map
+            Map<String, Object> movie = new HashMap<>();
+            movie.put("name", movieName.getText());
+            movie.put("releaseDate", releaseDate.getText());
+            movie.put("addTime", DateUtil.getCurrentTime());
+            Log.i("try to add to cloud2", "step2");
+            db.collection(strings[0]).add(movie).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                @Override
+                public void onSuccess(DocumentReference documentReference) {
+                    Log.d(TAG, "DocumentSnapshot successfully written!");
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Log.w(TAG, "Error writing document", e);
+                }
+            });
+            return null;
         }
     }
 
